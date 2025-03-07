@@ -59,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 15,
               ),
               GradientButton(
+                onPressed: () {},
                 buttonWidth: 350,
                 buttonHeight: 60,
                 firstGradientColor: AppPallete.gradient1,

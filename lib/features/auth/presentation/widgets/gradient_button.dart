@@ -1,18 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GradientButton extends StatefulWidget {
   final double buttonWidth, buttonHeight;
   final Color firstGradientColor, secondGradientColor;
   final String buttonText;
+  final VoidCallback onPressed;
 
-  GradientButton({
+  const GradientButton({
     super.key,
     required this.buttonWidth,
     required this.buttonHeight,
     required this.firstGradientColor,
     required this.secondGradientColor,
     required this.buttonText,
+    required this.onPressed,
   });
 
   @override
@@ -47,12 +48,12 @@ class _GradientButtonState extends State<GradientButton> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: widget.onPressed,
           borderRadius: BorderRadius.circular(30),
           child: Center(
             child: Text(
               widget.buttonText,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 17),
