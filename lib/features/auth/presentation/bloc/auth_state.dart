@@ -14,7 +14,7 @@ final class AuthFailure extends AuthState {
 }
 
 final class AuthSuccess extends AuthState {
-  final String uId;
+  final UserEntity user;
 
-  AuthSuccess(this.uId);
+  AuthSuccess(this.user);
 }
