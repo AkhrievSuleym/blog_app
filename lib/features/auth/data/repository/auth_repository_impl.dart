@@ -7,7 +7,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthRemoteDataSource remoteDataSource;
+  final BlogRemoteDataSource remoteDataSource;
 
   AuthRepositoryImpl(this.remoteDataSource);
 
