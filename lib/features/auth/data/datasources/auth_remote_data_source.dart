@@ -3,7 +3,7 @@ import 'package:blog_app/features/auth/data/models/user_model.dart';
 import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-abstract interface class BlogRemoteDataSource {
+abstract interface class AuthRemoteDataSource {
   Session? get currentUserSession;
   Future<UserModel> signUp(
       {required String name, required String email, required String password});
@@ -13,7 +13,7 @@ abstract interface class BlogRemoteDataSource {
   Future<UserModel?> getCurrentUserData();
 }
 
-class AuthRemoteDataSourceImpl implements BlogRemoteDataSource {
+class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final SupabaseClient supabaseClient;
   final Logger logger = Logger();
 

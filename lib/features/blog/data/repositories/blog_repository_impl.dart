@@ -7,6 +7,7 @@ import 'package:blog_app/features/blog/data/datasources/blog_remote_data_source.
 import 'package:blog_app/features/blog/data/models/blog_model.dart';
 import 'package:blog_app/features/blog/domain/repositories/blog_repository.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:logger/logger.dart';
 import 'package:uuid/uuid.dart';
 
 class BlogRepositoryImpl implements BlogRepository {
@@ -41,6 +42,7 @@ class BlogRepositoryImpl implements BlogRepository {
       );
 
       final uploadBlog = await blogRemoteDataSource.uploadBlog(blogModel);
+
       return right(uploadBlog);
     } on ServerException catch (e) {
       return left(Failure(e.message));
