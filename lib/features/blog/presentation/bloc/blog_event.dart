@@ -20,3 +20,5 @@ final class BlogUploadEvent extends BlogEvent {
 }
 
 final class GetAllBlogsEvent extends BlogEvent {}
+
+final class UserLoggedOutEvent extends BlogEvent {}

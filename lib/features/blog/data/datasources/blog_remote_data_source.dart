@@ -12,18 +12,18 @@ abstract interface class BlogRemoteDataSource {
     required BlogModel blog,
   });
   Future<List<BlogModel>> getAllBlogs();
+  Future<void> signOut();
 }
 
 class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   final SupabaseClient supabaseClient;
+  final Logger logger = Logger();
 
   BlogRemoteDataSourceImpl(this.supabaseClient);
 
   @override
   Future<BlogModel> uploadBlog(BlogModel blog) async {
     try {
-      final Logger logger = Logger();
-
       final blogData =
           await supabaseClient.from('blogs').insert(blog.toJson()).select();
       return BlogModel.fromJson(blogData.first);
@@ -43,6 +43,8 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
       await supabaseClient.storage.from('blog_images').upload(blog.id, image);
 
       return supabaseClient.storage.from('blog_images').getPublicUrl(blog.id);
+    } on StorageException catch (e) {
+      throw ServerException(e.message);
     } catch (e) {
       throw ServerException(e.toString());
     }
@@ -60,6 +62,18 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
             ),
           )
           .toList();
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> signOut() async {
+    try {
+      await supabaseClient.auth.signOut();
+      logger.i('success logged out');
+    } on AuthException catch (e) {
+      throw ServerException(e.message);
     } catch (e) {
       throw ServerException(e.toString());
     }
