@@ -75,17 +75,4 @@ class BlogRepositoryImpl implements BlogRepository {
       );
     }
   }
-
-  @override
-  Future<Either<Failure, void>> signOut() async {
-    try {
-      if (!await connectionChecker.isConnected) {
-        return left(Failure('No internet connection'));
-      }
-      blogRemoteDataSource.signOut();
-      return right(null);
-    } on ServerException catch (e) {
-      return left(Failure(e.message));
-    }
-  }
 }

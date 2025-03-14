@@ -14,7 +14,7 @@ import 'package:blog_app/features/blog/data/repositories/blog_repository_impl.da
 import 'package:blog_app/features/blog/domain/repositories/blog_repository.dart';
 import 'package:blog_app/features/blog/domain/usecases/get_all_blogs.dart';
 import 'package:blog_app/features/blog/domain/usecases/upload_blog.dart';
-import 'package:blog_app/features/blog/domain/usecases/user_sign_out.dart';
+import 'package:blog_app/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
@@ -68,6 +68,11 @@ void _initAuth() {
       ),
     )
     ..registerFactory(
+      () => UserSignOut(
+        serviceLocator(),
+      ),
+    )
+    ..registerFactory(
       () => UserLogin(
         serviceLocator(),
       ),
@@ -80,6 +85,7 @@ void _initAuth() {
       userLogin: serviceLocator(),
       currentUser: serviceLocator(),
       appUserCubit: serviceLocator(),
+      userSignOut: serviceLocator(),
     ),
   );
 }
@@ -112,11 +118,6 @@ void _initBlog() {
       ),
     )
     ..registerFactory(
-      () => UserSignOut(
-        serviceLocator(),
-      ),
-    )
-    ..registerFactory(
       () => GetAllBlogs(
         serviceLocator(),
       ),
@@ -127,7 +128,6 @@ void _initBlog() {
     () => BlogBloc(
       uploadBlog: serviceLocator(),
       getAllBlogs: serviceLocator(),
-      userSignOut: serviceLocator(),
     ),
   );
 }

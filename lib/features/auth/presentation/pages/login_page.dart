@@ -59,7 +59,11 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const Text(
                     "Sign In",
-                    style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontFamily: 'BigShouldersStencil',
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(
                     height: 30,

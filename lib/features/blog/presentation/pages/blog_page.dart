@@ -1,6 +1,7 @@
+import 'package:blog_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blog_app/core/common/widgets/loading.dart';
 import 'package:blog_app/core/utils/show_snackbar.dart';
-import 'package:blog_app/features/auth/presentation/pages/login_page.dart';
+import 'package:blog_app/features/auth/presentation/pages/profile_page.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:blog_app/features/blog/presentation/pages/new_blog_page.dart';
 import 'package:blog_app/features/blog/presentation/widgets/blog_card.dart';
@@ -10,9 +11,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BlogPage extends StatefulWidget {
   static route() => MaterialPageRoute(
-        builder: (cpntext) => const BlogPage(),
+        builder: (context) => const BlogPage(),
       );
-  const BlogPage({super.key});
+  const BlogPage({
+    super.key,
+  });
 
   @override
   State<BlogPage> createState() => _BlogPageState();
@@ -25,15 +28,23 @@ class _BlogPageState extends State<BlogPage> {
     context.read<BlogBloc>().add(GetAllBlogsEvent());
   }
 
-  void _signOut() {
-    context.read<BlogBloc>().add(UserLoggedOutEvent());
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Blog App"),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.person_sharp),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                ProfilePage.route(
+                    (context.read<AppUserCubit>().state as AppUserLoggedIn)
+                        .user),
+                (route) => false);
+          },
+        ),
         actions: [
           IconButton(
               onPressed: () {
@@ -58,7 +69,11 @@ class _BlogPageState extends State<BlogPage> {
                 final blog = state.blogs[index];
                 return BlogCard(
                   blog: blog,
-                  color: index % 2 == 0 ? Colors.red[400] : Colors.green[400],
+                  color: index % 3 == 0
+                      ? Colors.red[400]
+                      : index % 2 == 0
+                          ? Colors.green[400]
+                          : Colors.cyan,
                 );
               },
             );
@@ -67,22 +82,6 @@ class _BlogPageState extends State<BlogPage> {
             height: 15,
           );
         },
-      ),
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.logout_outlined),
-              onPressed: () {
-                _signOut();
-                Navigator.pushAndRemoveUntil(
-                    context, LoginPage.route(), (route) => false);
-              },
-            )
-          ],
-        ),
       ),
     );
   }

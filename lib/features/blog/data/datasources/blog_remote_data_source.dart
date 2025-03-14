@@ -12,7 +12,6 @@ abstract interface class BlogRemoteDataSource {
     required BlogModel blog,
   });
   Future<List<BlogModel>> getAllBlogs();
-  Future<void> signOut();
 }
 
 class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
@@ -62,18 +61,6 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
             ),
           )
           .toList();
-    } catch (e) {
-      throw ServerException(e.toString());
-    }
-  }
-
-  @override
-  Future<void> signOut() async {
-    try {
-      await supabaseClient.auth.signOut();
-      logger.i('success logged out');
-    } on AuthException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
       throw ServerException(e.toString());
     }

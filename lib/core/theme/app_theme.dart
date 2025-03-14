@@ -22,9 +22,9 @@ class AppTheme {
     ),
     inputDecorationTheme: InputDecorationTheme(
       contentPadding: const EdgeInsets.all(27),
-      border: _border(),
+      border: _border(AppPallete.gradient3!),
       enabledBorder: _border(),
-      focusedBorder: _border(AppPallete.gradient2),
+      focusedBorder: _border(AppPallete.gradient3!),
       errorBorder: _border(AppPallete.errorColor),
     ),
   );

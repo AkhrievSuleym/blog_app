@@ -15,8 +15,6 @@ final class BlogFailure extends BlogState {
 
 final class BlogUploadSuccess extends BlogState {}
 
-final class UserLoggedOutState extends BlogState {}
-
 final class BlogDisplaySuccess extends BlogState {
   final List<BlogEntity> blogs;
 

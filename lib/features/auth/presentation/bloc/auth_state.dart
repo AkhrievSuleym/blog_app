@@ -13,6 +13,8 @@ final class AuthFailure extends AuthState {
   AuthFailure(this.message);
 }
 
+final class UserLoggedOutState extends AuthState {}
+
 final class AuthSuccess extends AuthState {
   final UserEntity user;
 
