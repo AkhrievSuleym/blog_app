@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:blog_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blog_app/core/usecases/usecase.dart';
 import 'package:blog_app/core/common/entities/user_entity.dart';
 import 'package:blog_app/features/auth/domain/usecases/current_user.dart';
+import 'package:blog_app/features/auth/domain/usecases/update_user.dart';
 import 'package:blog_app/features/auth/domain/usecases/user_login.dart';
 import 'package:blog_app/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:blog_app/features/auth/domain/usecases/user_sign_up.dart';
@@ -17,6 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final CurrentUser _currentUser;
   final AppUserCubit _appUserCubit;
   final UserSignOut _userSignOut;
+  final UpdateUser _updateUser;
 
   AuthBloc({
     required UserSignUp userSignUp,
@@ -24,17 +28,36 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required CurrentUser currentUser,
     required AppUserCubit appUserCubit,
     required UserSignOut userSignOut,
+    required UpdateUser updateUser,
   })  : _userSighUp = userSignUp,
         _userLogin = userLogin,
         _currentUser = currentUser,
         _appUserCubit = appUserCubit,
         _userSignOut = userSignOut,
+        _updateUser = updateUser,
         super(AuthInitial()) {
     on<AuthEvent>((_, emit) => emit(AuthLoading()));
     on<AuthSignUp>(_onAuthSighUp);
     on<AuthLogin>(_onAuthLogin);
     on<AuthIsLoggedIn>(_isLoggedIn);
     on<UserLoggedOutEvent>(_onUserSignOut);
+    on<UserUpdateEvent>(_onUpdateUser);
+  }
+
+  void _onUpdateUser(UserUpdateEvent event, Emitter<AuthState> emit) async {
+    final params = UpdateUserParams(
+      image: event.image,
+      name: event.name,
+      email: event.email,
+      id: event.id,
+    );
+
+    final result = await _updateUser(params);
+
+    result.fold(
+      (failure) => emit(AuthFailure(failure.message)),
+      (user) => emit(UpdateUserSuccess(user)),
+    );
   }
 
   void _onUserSignOut(UserLoggedOutEvent event, Emitter<AuthState> emit) async {
