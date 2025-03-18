@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:blog_app/core/error/exceptions.dart';
 import 'package:blog_app/core/error/failures.dart';
 import 'package:blog_app/core/network/connection.dart';
@@ -6,6 +8,7 @@ import 'package:blog_app/core/common/entities/user_entity.dart';
 import 'package:blog_app/features/auth/data/models/user_model.dart';
 import 'package:blog_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:uuid/uuid.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
@@ -63,10 +66,12 @@ class AuthRepositoryImpl implements AuthRepository {
             id: session.user.id,
             email: session.user.email ?? '',
             name: '',
+            imageUrl: '',
           ),
         );
       }
       final user = await remoteDataSource.getCurrentUserData();
+
       if (user == null) {
         return left(
           Failure('User is not logged in!'),
@@ -87,6 +92,39 @@ class AuthRepositoryImpl implements AuthRepository {
       }
       remoteDataSource.signOut();
       return right(null);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> updateProfile({
+    required File image,
+    required String name,
+    required String email,
+    required String id,
+  }) async {
+    try {
+      if (!await connectionChecker.isConnected) {
+        return left(Failure('No internet connection'));
+      }
+      UserModel user = UserModel(
+        name: name,
+        email: email,
+        imageUrl: '',
+        id: id,
+      );
+
+      final imageUrl =
+          await remoteDataSource.uploadUserImage(image: image, user: user);
+
+      user = user.copyWith(
+        imageUrl: imageUrl,
+      );
+
+      final updateUser = await remoteDataSource.updateProfile(user);
+
+      return right(updateUser);
     } on ServerException catch (e) {
       return left(Failure(e.message));
     }

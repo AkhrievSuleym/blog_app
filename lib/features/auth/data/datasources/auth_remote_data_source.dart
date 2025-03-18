@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:blog_app/core/error/exceptions.dart';
 import 'package:blog_app/features/auth/data/models/user_model.dart';
 import 'package:logger/logger.dart';
@@ -12,6 +14,11 @@ abstract interface class AuthRemoteDataSource {
 
   Future<UserModel?> getCurrentUserData();
   Future<void> signOut();
+  Future<String> uploadUserImage({
+    required File image,
+    required UserModel user,
+  });
+  Future<UserModel> updateProfile(UserModel user);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -85,6 +92,37 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       await supabaseClient.auth.signOut();
       logger.i('success logged out');
     } on AuthException catch (e) {
+      throw ServerException(e.message);
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<String> uploadUserImage({
+    required File image,
+    required UserModel user,
+  }) async {
+    try {
+      await supabaseClient.storage.from('user_images').upload(user.id, image);
+
+      return supabaseClient.storage.from('user_images').getPublicUrl(user.id);
+    } on StorageException catch (e) {
+      throw ServerException(e.message);
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<UserModel> updateProfile(
+    UserModel user,
+  ) async {
+    try {
+      final userData =
+          await supabaseClient.from('users').insert(user.toJson()).select();
+      return UserModel.fromJson(userData.first);
+    } on PostgrestException catch (e) {
       throw ServerException(e.message);
     } catch (e) {
       throw ServerException(e.toString());

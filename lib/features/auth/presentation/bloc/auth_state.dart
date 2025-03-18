@@ -20,3 +20,9 @@ final class AuthSuccess extends AuthState {
 
   AuthSuccess(this.user);
 }
+
+final class UpdateUserSuccess extends AuthState {
+  final UserEntity user;
+
+  UpdateUserSuccess(this.user);
+}
