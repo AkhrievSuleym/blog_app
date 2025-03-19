@@ -75,4 +75,34 @@ class BlogRepositoryImpl implements BlogRepository {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, List<BlogEntity>>> getAllBlogsByID() async {
+    try {
+      // if (!await connectionChecker.isConnected) {
+      //   final blogs = blogLocalDataSource.loadBlogs();
+      //   return right(blogs);
+      // }
+      final blogs = await blogRemoteDataSource.getAllBlogs();
+      //blogLocalDataSource.uploadLocalBlogs(blogs: blogs);
+      return right(blogs);
+    } on ServerException catch (e) {
+      return left(
+        Failure(e.message),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<BlogEntity>>> getAllBlogsById(
+      {required String userId}) async {
+    try {
+      final blogs = await blogRemoteDataSource.getAllBlogsById(userId: userId);
+      return right(blogs);
+    } on ServerException catch (e) {
+      return left(
+        Failure(e.message),
+      );
+    }
+  }
 }

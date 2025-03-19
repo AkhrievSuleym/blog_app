@@ -21,7 +21,7 @@ class UserModel extends UserEntity {
       id: map['id'] ?? '',
       email: map['email'] ?? '',
       name: map['name'] ?? '',
-      imageUrl: map['image_url'] as String,
+      imageUrl: map['image_url'] ?? '',
     );
   }
 

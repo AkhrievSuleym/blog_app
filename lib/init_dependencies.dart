@@ -5,6 +5,7 @@ import 'package:blog_app/features/auth/data/datasources/auth_remote_data_source.
 import 'package:blog_app/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:blog_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:blog_app/features/auth/domain/usecases/current_user.dart';
+import 'package:blog_app/features/auth/domain/usecases/update_user.dart';
 import 'package:blog_app/features/auth/domain/usecases/user_login.dart';
 import 'package:blog_app/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:blog_app/features/auth/presentation/bloc/auth_bloc.dart';
@@ -73,6 +74,11 @@ void _initAuth() {
       ),
     )
     ..registerFactory(
+      () => UpdateUser(
+        serviceLocator(),
+      ),
+    )
+    ..registerFactory(
       () => UserLogin(
         serviceLocator(),
       ),
@@ -86,6 +92,7 @@ void _initAuth() {
       currentUser: serviceLocator(),
       appUserCubit: serviceLocator(),
       userSignOut: serviceLocator(),
+      updateUser: serviceLocator(),
     ),
   );
 }
