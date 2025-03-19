@@ -121,6 +121,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       final userData =
           await supabaseClient.from('users').insert(user.toJson()).select();
+
       return UserModel.fromJson(userData.first);
     } on PostgrestException catch (e) {
       throw ServerException(e.message);

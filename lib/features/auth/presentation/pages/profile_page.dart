@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:blog_app/core/common/entities/blog_entity.dart';
 import 'package:blog_app/core/common/entities/user_entity.dart';
 import 'package:blog_app/core/theme/app_pallete.dart';
 import 'package:blog_app/core/utils/capitalize.dart';
@@ -12,12 +13,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfilePage extends StatefulWidget {
-  static route(UserEntity user) => MaterialPageRoute(
-        builder: (context) => ProfilePage(user: user),
+  static route(UserEntity user, List<BlogEntity> blogs) => MaterialPageRoute(
+        builder: (context) => ProfilePage(
+          user: user,
+          blogs: blogs,
+        ),
       );
   final UserEntity user;
+  final List<BlogEntity> blogs;
 
-  const ProfilePage({super.key, required this.user});
+  const ProfilePage({
+    super.key,
+    required this.user,
+    required this.blogs,
+  });
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -59,6 +68,12 @@ class _ProfilePageState extends State<ProfilePage> {
           centerTitle: true,
           leading: IconButton(
             onPressed: () {
+              _updateUserProfile(
+                image!,
+                widget.user.name,
+                widget.user.email,
+                widget.user.id,
+              );
               Navigator.pushAndRemoveUntil(
                 context,
                 BlogPage.route(),
@@ -189,6 +204,10 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           Text(
             widget.user.email,
+            style: profileTextStyle(),
+          ),
+          Text(
+            widget.blogs.length.toString(),
             style: profileTextStyle(),
           ),
         ]),

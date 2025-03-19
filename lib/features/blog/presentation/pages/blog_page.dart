@@ -41,7 +41,9 @@ class _BlogPageState extends State<BlogPage> {
                 context,
                 ProfilePage.route(
                     (context.read<AppUserCubit>().state as AppUserLoggedIn)
-                        .user),
+                        .user,
+                    (context.read<BlogBloc>().state as BlogDisplaySuccess)
+                        .blogs),
                 (route) => false);
           },
         ),
