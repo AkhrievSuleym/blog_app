@@ -117,4 +117,41 @@ class BlogRepositoryImpl implements BlogRepository {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, BlogEntity>> editBlogById(
+      {required String blogId,
+      required String userId,
+      required File image,
+      required String title,
+      required String content,
+      required List<String> topics}) async {
+    try {
+      if (!await connectionChecker.isConnected) {
+        return left(Failure('No internet connection'));
+      }
+      BlogModel blogModel = BlogModel(
+        id: blogId,
+        userId: userId,
+        title: title,
+        content: content,
+        imageUrl: '',
+        topics: topics,
+        updatedAt: DateTime.now(),
+      );
+
+      final imageUrl = await blogRemoteDataSource.uploadBlogImage(
+          image: image, blog: blogModel);
+
+      blogModel = blogModel.copyWith(
+        imageUrl: imageUrl,
+      );
+
+      final updateBlog = await blogRemoteDataSource.uploadBlog(blogModel);
+
+      return right(updateBlog);
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
 }

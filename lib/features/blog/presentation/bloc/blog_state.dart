@@ -15,6 +15,8 @@ final class BlogFailure extends BlogState {
 
 final class BlogUploadSuccess extends BlogState {}
 
+final class BlogUpdateSuccess extends BlogState {}
+
 final class BlogDeleteSuccess extends BlogState {}
 
 final class BlogDisplaySuccess extends BlogState {

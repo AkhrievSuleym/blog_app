@@ -19,4 +19,13 @@ abstract interface class BlogRepository {
   Future<Either<Failure, void>> deleteBlogById({
     required String blogId,
   });
+
+  Future<Either<Failure, BlogEntity>> editBlogById({
+    required String blogId,
+    required String userId,
+    required File image,
+    required String title,
+    required String content,
+    required List<String> topics,
+  });
 }
