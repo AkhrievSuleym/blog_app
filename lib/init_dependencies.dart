@@ -14,6 +14,7 @@ import 'package:blog_app/features/blog/data/datasources/blog_local_data_source.d
 import 'package:blog_app/features/blog/data/datasources/blog_remote_data_source.dart';
 import 'package:blog_app/features/blog/data/repositories/blog_repository_impl.dart';
 import 'package:blog_app/features/blog/domain/repositories/blog_repository.dart';
+import 'package:blog_app/features/blog/domain/usecases/delete_blog.dart';
 import 'package:blog_app/features/blog/domain/usecases/get_all_blogs.dart';
 import 'package:blog_app/features/blog/domain/usecases/get_all_blogs_by_id.dart';
 import 'package:blog_app/features/blog/domain/usecases/upload_blog.dart';
@@ -133,6 +134,11 @@ void _initBlog() {
       ),
     )
     ..registerFactory(
+      () => DeleteBlog(
+        serviceLocator(),
+      ),
+    )
+    ..registerFactory(
       () => GetAllBlogs(
         serviceLocator(),
       ),
@@ -144,6 +150,7 @@ void _initBlog() {
       uploadBlog: serviceLocator(),
       getAllBlogs: serviceLocator(),
       getAllBlogsById: serviceLocator(),
+      deleteBlog: serviceLocator(),
     ),
   );
 }
