@@ -141,103 +141,115 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(children: [
-          const SizedBox(
-            height: 20,
-          ),
-          image != null
-              ? GestureDetector(
-                  onTap: selectImage,
-                  child: SizedBox(
-                    height: 150,
-                    width: 150,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image.file(
-                        image!,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Center(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 20,
                   ),
-                )
-              : widget.user.imageUrl != ''
-                  ? GestureDetector(
-                      onTap: selectImage,
-                      child: SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image.network(
-                            widget.user.imageUrl,
+                  image != null
+                      ? GestureDetector(
+                          onTap: selectImage,
+                          child: SizedBox(
+                            height: 150,
+                            width: 150,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Image.file(
+                                image!,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    )
-                  : GestureDetector(
-                      onTap: () => selectImage(),
-                      child: DottedBorder(
-                        color: AppPallete.borderColor,
-                        dashPattern: const [10, 4],
-                        radius: const Radius.circular(100),
-                        borderType: BorderType.Circle,
-                        strokeCap: StrokeCap.round,
-                        child: const SizedBox(
-                          height: 150,
-                          width: 150,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.add,
-                                size: 40,
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Text(
-                                'Your image',
-                                style: TextStyle(
-                                  fontSize: 15,
+                        )
+                      : widget.user.imageUrl != ''
+                          ? GestureDetector(
+                              onTap: selectImage,
+                              child: SizedBox(
+                                height: 150,
+                                width: 150,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: Image.network(
+                                    widget.user.imageUrl,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-          Text(
-            widget.user.name.capitalize(),
-            style: profileTextStyle(fontSize: 50),
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () => selectImage(),
+                              child: DottedBorder(
+                                color: AppPallete.borderColor,
+                                dashPattern: const [10, 4],
+                                radius: const Radius.circular(100),
+                                borderType: BorderType.Circle,
+                                strokeCap: StrokeCap.round,
+                                child: const SizedBox(
+                                  height: 150,
+                                  width: 150,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.add,
+                                        size: 40,
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      Text(
+                                        'Your image',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                  Text(
+                    widget.user.name.capitalize(),
+                    style: profileTextStyle(fontSize: 50),
+                  ),
+                  Text(
+                    widget.user.email,
+                    style: profileTextStyle(),
+                  ),
+                  Text(
+                    "Amount of blogs: ${widget.blogs.length.toString()}",
+                    style: profileTextStyle(),
+                  ),
+                ],
+              ),
+            ),
           ),
-          Text(
-            widget.user.email,
-            style: profileTextStyle(),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: GradientButton(
+                buttonWidth: 100,
+                buttonHeight: 50,
+                firstGradientColor: AppPallete.gradient1,
+                secondGradientColor: AppPallete.gradient2,
+                buttonText: 'save',
+                onPressed: () {
+                  _updateUserProfile(
+                    image ?? Constants.imageDefolt,
+                    widget.user.name,
+                    widget.user.email,
+                    widget.user.id,
+                  );
+                },
+              ),
+            ),
           ),
-          Text(
-            widget.blogs.length.toString(),
-            style: profileTextStyle(),
-          ),
-          Text(
-            '${widget.user.imageUrl} + 1',
-            style: profileTextStyle(),
-          ),
-          GradientButton(
-              buttonWidth: 100,
-              buttonHeight: 50,
-              firstGradientColor: AppPallete.gradient1,
-              secondGradientColor: AppPallete.gradient2,
-              buttonText: 'save',
-              onPressed: () {
-                _updateUserProfile(
-                  image ?? Constants.imageDefolt,
-                  widget.user.name,
-                  widget.user.email,
-                  widget.user.id,
-                );
-              }),
-        ]),
+        ],
       ),
     );
   }

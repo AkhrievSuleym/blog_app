@@ -26,3 +26,9 @@ final class GetAllBlogsByIdEvent extends BlogEvent {
 
   GetAllBlogsByIdEvent({required this.userId});
 }
+
+final class BlogDeleteEvent extends BlogEvent {
+  final String blogId;
+
+  BlogDeleteEvent({required this.blogId});
+}
