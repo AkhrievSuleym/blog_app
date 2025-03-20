@@ -1,4 +1,5 @@
 import 'package:blog_app/core/common/cubits/app_user/app_user_cubit.dart';
+import 'package:blog_app/core/common/cubits/update_user/update_user_cubit.dart';
 import 'package:blog_app/core/network/connection.dart';
 import 'package:blog_app/core/secrets/app_secrets.dart';
 import 'package:blog_app/features/auth/data/datasources/auth_remote_data_source.dart';
@@ -38,6 +39,7 @@ Future<void> initDependencies() async {
 
   //core
   serviceLocator.registerLazySingleton(() => AppUserCubit());
+  serviceLocator.registerLazySingleton(() => UpdateUserCubit(serviceLocator()));
   serviceLocator.registerLazySingleton(() => Hive.box(name: 'blogs'));
   serviceLocator.registerFactory(() => InternetConnection());
 

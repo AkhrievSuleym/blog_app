@@ -8,6 +8,7 @@ import 'package:blog_app/core/common/entities/user_entity.dart';
 import 'package:blog_app/features/auth/data/models/user_model.dart';
 import 'package:blog_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:logger/logger.dart';
 import 'package:uuid/uuid.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -115,14 +116,19 @@ class AuthRepositoryImpl implements AuthRepository {
         id: id,
       );
 
+      Logger logger = Logger();
+      logger.i("start");
+
       final imageUrl =
           await remoteDataSource.uploadUserImage(image: image, user: user);
 
-      user = user.copyWith(
-        imageUrl: imageUrl,
-      );
+      logger.i(imageUrl);
+
+      user = user.copyWith(imageUrl: imageUrl, email: email);
+      logger.i("continue");
 
       final updateUser = await remoteDataSource.updateProfile(user);
+      logger.i("end");
 
       return right(updateUser);
     } on ServerException catch (e) {

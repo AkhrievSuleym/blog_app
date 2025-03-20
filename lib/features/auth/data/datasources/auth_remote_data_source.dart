@@ -104,7 +104,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required UserModel user,
   }) async {
     try {
-      await supabaseClient.storage.from('user_images').upload(user.id, image);
+      try {
+        await supabaseClient.storage.from('user_images').upload(user.id, image);
+      } catch (e) {
+        logger.i(e.toString());
+
+        throw ServerException(e.toString());
+      }
 
       return supabaseClient.storage.from('user_images').getPublicUrl(user.id);
     } on StorageException catch (e) {
@@ -119,13 +125,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     UserModel user,
   ) async {
     try {
-      final userData =
-          await supabaseClient.from('users').insert(user.toJson()).select();
+      final userData = await supabaseClient
+          .from('users')
+          .update(user.toJson())
+          .eq('id', user.id)
+          .select();
 
       return UserModel.fromJson(userData.first);
     } on PostgrestException catch (e) {
+      logger.i(e.message);
       throw ServerException(e.message);
     } catch (e) {
+      logger.i(e.toString());
+
       throw ServerException(e.toString());
     }
   }
