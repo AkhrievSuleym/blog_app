@@ -7,6 +7,7 @@ import 'package:blog_app/core/utils/format_date.dart';
 import 'package:blog_app/core/utils/show_snackbar.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:blog_app/features/blog/presentation/pages/blog_page.dart';
+import 'package:blog_app/features/blog/presentation/pages/new_or_edit_blog_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -84,7 +85,10 @@ class _BlogViewerPageState extends State<BlogViewerPage> {
                     ? Row(
                         children: [
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context,
+                                  NewOrEditBlogPage.route(widget.blog));
+                            },
                             icon: const Icon(Icons.edit),
                           ),
                           IconButton(

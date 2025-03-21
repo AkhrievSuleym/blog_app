@@ -9,6 +9,7 @@ import 'package:blog_app/features/blog/data/datasources/blog_remote_data_source.
 import 'package:blog_app/features/blog/data/models/blog_model.dart';
 import 'package:blog_app/features/blog/domain/repositories/blog_repository.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:logger/logger.dart';
 import 'package:uuid/uuid.dart';
 
 class BlogRepositoryImpl implements BlogRepository {
@@ -139,16 +140,21 @@ class BlogRepositoryImpl implements BlogRepository {
         topics: topics,
         updatedAt: DateTime.now(),
       );
-
-      final imageUrl = await blogRemoteDataSource.uploadBlogImage(
+      Logger logger = Logger();
+      logger.i('start1');
+      final imageUrl = await blogRemoteDataSource.updateBlogImage(
           image: image, blog: blogModel);
 
+      logger.i('start2');
       blogModel = blogModel.copyWith(
         imageUrl: imageUrl,
       );
 
-      final updateBlog = await blogRemoteDataSource.uploadBlog(blogModel);
+      logger.i('start3');
+      final updateBlog =
+          await blogRemoteDataSource.editBlogById(blog: blogModel);
 
+      logger.i('start4');
       return right(updateBlog);
     } on ServerException catch (e) {
       return left(Failure(e.message));
