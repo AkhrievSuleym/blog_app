@@ -16,11 +16,13 @@ class BlogRepositoryImpl implements BlogRepository {
   final BlogRemoteDataSource blogRemoteDataSource;
   //final BlogLocalDataSource blogLocalDataSource;
   final ConnectionChecker connectionChecker;
+  final Logger _logger;
 
   BlogRepositoryImpl(
     this.blogRemoteDataSource,
     //this.blogLocalDataSource,
     this.connectionChecker,
+    this._logger,
   );
 
   @override
@@ -120,7 +122,7 @@ class BlogRepositoryImpl implements BlogRepository {
   }
 
   @override
-  Future<Either<Failure, BlogEntity>> editBlogById(
+  Future<Either<Failure, BlogModel>> editBlogById(
       {required String blogId,
       required String userId,
       required File image,
@@ -140,21 +142,17 @@ class BlogRepositoryImpl implements BlogRepository {
         topics: topics,
         updatedAt: DateTime.now(),
       );
-      Logger logger = Logger();
-      logger.i('start1');
+
       final imageUrl = await blogRemoteDataSource.updateBlogImage(
           image: image, blog: blogModel);
 
-      logger.i('start2');
       blogModel = blogModel.copyWith(
         imageUrl: imageUrl,
       );
 
-      logger.i('start3');
       final updateBlog =
           await blogRemoteDataSource.editBlogById(blog: blogModel);
 
-      logger.i('start4');
       return right(updateBlog);
     } on ServerException catch (e) {
       return left(Failure(e.message));

@@ -24,6 +24,7 @@ import 'package:blog_app/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -45,6 +46,8 @@ Future<void> initDependencies() async {
   serviceLocator.registerLazySingleton(() => Hive.box(name: 'blogs'));
   serviceLocator.registerFactory(() => InternetConnection());
 
+  serviceLocator.registerLazySingleton(() => Logger());
+
   serviceLocator.registerFactory<ConnectionChecker>(
       () => ConnectionCheckerImpl(serviceLocator()));
 }
@@ -54,10 +57,12 @@ void _initAuth() {
     ..registerFactory<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(
         serviceLocator(),
+        serviceLocator(),
       ),
     )
     ..registerFactory<AuthRepository>(
       () => AuthRepositoryImpl(
+        serviceLocator(),
         serviceLocator(),
         serviceLocator(),
       ),
@@ -108,6 +113,7 @@ void _initBlog() {
     ..registerFactory<BlogRemoteDataSource>(
       () => BlogRemoteDataSourceImpl(
         serviceLocator(),
+        serviceLocator(),
       ),
     )
     // ..registerFactory<BlogLocalDataSource>(
@@ -119,7 +125,7 @@ void _initBlog() {
       () => BlogRepositoryImpl(
         serviceLocator(),
         serviceLocator(),
-        //serviceLocator(),
+        serviceLocator(),
       ),
     )
 

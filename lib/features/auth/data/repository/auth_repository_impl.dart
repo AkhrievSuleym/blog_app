@@ -14,8 +14,10 @@ import 'package:uuid/uuid.dart';
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
   final ConnectionChecker connectionChecker;
+  final Logger _logger;
 
-  AuthRepositoryImpl(this.remoteDataSource, this.connectionChecker);
+  AuthRepositoryImpl(
+      this.remoteDataSource, this.connectionChecker, this._logger);
 
   @override
   Future<Either<Failure, UserEntity>> login(
@@ -116,19 +118,18 @@ class AuthRepositoryImpl implements AuthRepository {
         id: id,
       );
 
-      Logger logger = Logger();
-      logger.i("start");
+      _logger.i("start");
 
       final imageUrl =
-          await remoteDataSource.uploadUserImage(image: image, user: user);
+          await remoteDataSource.updateUserImage(image: image, user: user);
 
-      logger.i(imageUrl);
+      _logger.i(imageUrl);
 
       user = user.copyWith(imageUrl: imageUrl, email: email);
-      logger.i("continue");
+      _logger.i("continue");
 
       final updateUser = await remoteDataSource.updateProfile(user);
-      logger.i("end");
+      _logger.i("end");
 
       return right(updateUser);
     } on ServerException catch (e) {

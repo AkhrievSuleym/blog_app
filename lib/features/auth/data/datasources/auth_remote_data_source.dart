@@ -18,14 +18,18 @@ abstract interface class AuthRemoteDataSource {
     required File image,
     required UserModel user,
   });
+  Future<String> updateUserImage({
+    required File image,
+    required UserModel user,
+  });
   Future<UserModel> updateProfile(UserModel user);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final SupabaseClient supabaseClient;
-  final Logger logger = Logger();
+  final Logger _logger;
 
-  AuthRemoteDataSourceImpl(this.supabaseClient);
+  AuthRemoteDataSourceImpl(this.supabaseClient, this._logger);
 
   @override
   Future<UserModel> login(
@@ -90,7 +94,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<void> signOut() async {
     try {
       await supabaseClient.auth.signOut();
-      logger.i('success logged out');
+      _logger.i('success logged out');
     } on AuthException catch (e) {
       throw ServerException(e.message);
     } catch (e) {
@@ -107,7 +111,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       try {
         await supabaseClient.storage.from('user_images').upload(user.id, image);
       } catch (e) {
-        logger.i(e.toString());
+        _logger.i(e.toString());
 
         throw ServerException(e.toString());
       }
@@ -117,6 +121,30 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       throw ServerException(e.message);
     } catch (e) {
       throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<String> updateUserImage({
+    required File image,
+    required UserModel user,
+  }) async {
+    try {
+      await supabaseClient.storage.from('user_images').update(
+            user.id,
+            image,
+            fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
+          );
+      final publicUrl =
+          supabaseClient.storage.from('user_images').getPublicUrl(user.id);
+      final uniqueUrl = "$publicUrl?v=${DateTime.now().millisecondsSinceEpoch}";
+      return uniqueUrl;
+    } on StorageException catch (e) {
+      _logger.e("Failed to update user image: ${e.message}");
+      throw ServerException(e.message);
+    } catch (e) {
+      _logger.e("Unexpected error updating user image: $e");
+      throw ServerException("Failed to update user image");
     }
   }
 
@@ -133,10 +161,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       return UserModel.fromJson(userData.first);
     } on PostgrestException catch (e) {
-      logger.i(e.message);
+      _logger.i(e.message);
       throw ServerException(e.message);
     } catch (e) {
-      logger.i(e.toString());
+      _logger.i(e.toString());
 
       throw ServerException(e.toString());
     }

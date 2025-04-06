@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:blog_app/core/common/entities/blog_entity.dart';
 import 'package:blog_app/core/error/failures.dart';
+import 'package:blog_app/features/blog/data/models/blog_model.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract interface class BlogRepository {
@@ -20,7 +21,7 @@ abstract interface class BlogRepository {
     required String blogId,
   });
 
-  Future<Either<Failure, BlogEntity>> editBlogById({
+  Future<Either<Failure, BlogModel>> editBlogById({
     required String blogId,
     required String userId,
     required File image,

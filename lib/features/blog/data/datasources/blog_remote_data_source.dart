@@ -27,9 +27,9 @@ abstract interface class BlogRemoteDataSource {
 
 class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   final SupabaseClient supabaseClient;
-  final Logger logger = Logger();
+  final Logger _logger;
 
-  BlogRemoteDataSourceImpl(this.supabaseClient);
+  BlogRemoteDataSourceImpl(this.supabaseClient, this._logger);
 
   @override
   Future<BlogModel> uploadBlog(BlogModel blog) async {
@@ -60,26 +60,62 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
     }
   }
 
+  // @override
+  // Future<String> updateBlogImage({
+  //   required File image,
+  //   required BlogModel blog,
+  // }) async {
+  //   try {
+  //     final storage = supabaseClient.storage.from('blog_images');
+  //     try {
+  //       await storage.remove([blog.id]);
+
+  //       _logger.i("Старое изображение удалено: ${blog.id}");
+  //     } on StorageException catch (e) {
+  //       if (!e.message.contains('not found')) {
+  //         // Игнорируем ошибку "файл не найден"
+  //         _logger.w("Не удалось удалить старое изображение: ${e.message}");
+  //       }
+  //     }
+
+  //     await storage.upload(
+  //       blog.id,
+  //       image,
+  //       fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
+  //     );
+
+  //     _logger.i("Новое изображение успешно загружено: ${blog.id}");
+
+  //     return storage.getPublicUrl(blog.id);
+  //   } on StorageException catch (e) {
+  //     _logger.e("Ошибка Supabase Storage: ${e.message}");
+  //     throw ServerException(e.message);
+  //   } catch (e) {
+  //     _logger.e("Неожиданная ошибка при обновлении изображения: $e");
+  //     throw ServerException("Failed to update blog image");
+  //   }
+  // }
   @override
   Future<String> updateBlogImage({
     required File image,
     required BlogModel blog,
   }) async {
     try {
-      await supabaseClient.storage
-          .from('blog_images')
-          .remove(['762c1b10-05ef-11f0-95c0-6f96c2c3a425']);
-
-      logger.i("select");
-
-      await supabaseClient.storage.from('blog_images').upload(blog.id, image);
-      logger.i("select");
-
-      return supabaseClient.storage.from('blog_images').getPublicUrl(blog.id);
+      await supabaseClient.storage.from('blog_images').update(
+            blog.id,
+            image,
+            fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
+          );
+      final publicUrl =
+          supabaseClient.storage.from('blog_images').getPublicUrl(blog.id);
+      final uniqueUrl = "$publicUrl?v=${DateTime.now().millisecondsSinceEpoch}";
+      return uniqueUrl;
     } on StorageException catch (e) {
+      _logger.e("Failed to update blog image: ${e.message}");
       throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      _logger.e("Unexpected error updating blog image: $e");
+      throw ServerException("Failed to update blog image");
     }
   }
 
@@ -134,9 +170,11 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
       final blogData = await supabaseClient
           .from('blogs')
           .update(blog.toJson())
-          .eq('id', blog.id);
-      return blogData;
+          .eq('id', blog.id)
+          .select();
+      return BlogModel.fromJson(blogData.first);
     } catch (error) {
+      _logger.e(error.toString());
       throw ServerException(error.toString());
     }
   }

@@ -36,7 +36,16 @@ class _BlogViewerPageState extends State<BlogViewerPage> {
   Widget build(BuildContext context) {
     final user = (context.read<AppUserCubit>().state as AppUserLoggedIn).user;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  BlogPage.route(),
+                  (route) => false,
+                );
+              },
+              icon: const Icon(Icons.arrow_back_ios_new_sharp))),
       body: Scrollbar(
         child: SingleChildScrollView(
           child: Padding(
@@ -71,7 +80,9 @@ class _BlogViewerPageState extends State<BlogViewerPage> {
                 const SizedBox(height: 20),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.network(widget.blog.imageUrl),
+                  child: Image.network(
+                    widget.blog.imageUrl,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Text(
