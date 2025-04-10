@@ -24,6 +24,7 @@ abstract interface class BlogRepository {
   Future<Either<Failure, BlogModel>> editBlogById({
     required String blogId,
     required String userId,
+    required String userName,
     required File image,
     required String title,
     required String content,

@@ -60,41 +60,6 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
     }
   }
 
-  // @override
-  // Future<String> updateBlogImage({
-  //   required File image,
-  //   required BlogModel blog,
-  // }) async {
-  //   try {
-  //     final storage = supabaseClient.storage.from('blog_images');
-  //     try {
-  //       await storage.remove([blog.id]);
-
-  //       _logger.i("Старое изображение удалено: ${blog.id}");
-  //     } on StorageException catch (e) {
-  //       if (!e.message.contains('not found')) {
-  //         // Игнорируем ошибку "файл не найден"
-  //         _logger.w("Не удалось удалить старое изображение: ${e.message}");
-  //       }
-  //     }
-
-  //     await storage.upload(
-  //       blog.id,
-  //       image,
-  //       fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
-  //     );
-
-  //     _logger.i("Новое изображение успешно загружено: ${blog.id}");
-
-  //     return storage.getPublicUrl(blog.id);
-  //   } on StorageException catch (e) {
-  //     _logger.e("Ошибка Supabase Storage: ${e.message}");
-  //     throw ServerException(e.message);
-  //   } catch (e) {
-  //     _logger.e("Неожиданная ошибка при обновлении изображения: $e");
-  //     throw ServerException("Failed to update blog image");
-  //   }
-  // }
   @override
   Future<String> updateBlogImage({
     required File image,

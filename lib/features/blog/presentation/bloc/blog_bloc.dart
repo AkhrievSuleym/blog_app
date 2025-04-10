@@ -75,7 +75,7 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
 
     res.fold(
       (failure) => emit(BlogFailure(failure.message)),
-      (blogs) => emit(BlogDisplaySuccess(blogs)),
+      (blogs) => emit(BlogsByIdDisplaySuccess(blogs)),
     );
   }
 
@@ -99,6 +99,7 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
         content: event.content,
         image: event.image,
         topics: event.topics,
+        userName: event.username,
       ),
     );
 

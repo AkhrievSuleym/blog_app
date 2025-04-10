@@ -1,6 +1,5 @@
 import 'package:blog_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blog_app/core/common/widgets/loading.dart';
-import 'package:blog_app/core/utils/capitalize.dart';
 import 'package:blog_app/core/utils/show_snackbar.dart';
 import 'package:blog_app/features/auth/presentation/pages/profile_page.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc.dart';
@@ -59,7 +58,7 @@ class _BlogPageState extends State<BlogPage> {
       body: BlocConsumer<BlogBloc, BlogState>(
         listener: (context, state) {
           if (state is BlogFailure) {
-            showSnackBar(context, state.error);
+            showSnackBar(context, state.error, isError: true);
           }
         },
         builder: (context, state) {

@@ -28,3 +28,9 @@ final class BlogDisplaySuccess extends BlogState {
 
   BlogDisplaySuccess(this.blogs);
 }
+
+final class BlogsByIdDisplaySuccess extends BlogState {
+  final List<BlogEntity> blogs;
+
+  BlogsByIdDisplaySuccess(this.blogs);
+}

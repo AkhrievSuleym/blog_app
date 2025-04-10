@@ -38,11 +38,13 @@ final class BlogUpdateEvent extends BlogEvent {
   final String blogId;
   final String title;
   final String content;
+  final String username;
   final File image;
   final List<String> topics;
 
   BlogUpdateEvent(
       {required this.userId,
+      required this.username,
       required this.blogId,
       required this.title,
       required this.content,

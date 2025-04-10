@@ -1,8 +1,8 @@
 import 'package:blog_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blog_app/core/common/entities/blog_entity.dart';
-import 'package:blog_app/core/common/entities/user_entity.dart';
 import 'package:blog_app/core/theme/app_pallete.dart';
 import 'package:blog_app/core/utils/calculate_reading_time.dart';
+import 'package:blog_app/core/utils/capitalize.dart';
 import 'package:blog_app/core/utils/format_date.dart';
 import 'package:blog_app/core/utils/show_snackbar.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc.dart';
@@ -62,7 +62,7 @@ class _BlogViewerPageState extends State<BlogViewerPage> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'By ${widget.blog.userName}',
+                  'By ${widget.blog.userName?.capitalize()}',
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
@@ -121,14 +121,16 @@ class _BlogViewerPageState extends State<BlogViewerPage> {
                           IconButton(
                             onPressed: () {
                               showSnackBar(
-                                  context, 'You can edit only your blogs!');
+                                  context, 'You can edit only your blogs!',
+                                  isError: true);
                             },
                             icon: const Icon(Icons.edit_off_outlined),
                           ),
                           IconButton(
                             onPressed: () {
                               showSnackBar(
-                                  context, 'You can delete only your blogs!');
+                                  context, 'You can delete only your blogs!',
+                                  isError: true);
                             },
                             icon: const Icon(Icons.delete_forever_outlined),
                           ),
