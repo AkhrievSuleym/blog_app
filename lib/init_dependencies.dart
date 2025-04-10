@@ -14,14 +14,17 @@ import 'package:blog_app/features/blog/data/datasources/blog_local_data_source.d
 import 'package:blog_app/features/blog/data/datasources/blog_remote_data_source.dart';
 import 'package:blog_app/features/blog/data/repositories/blog_repository_impl.dart';
 import 'package:blog_app/features/blog/domain/repositories/blog_repository.dart';
+import 'package:blog_app/features/blog/domain/usecases/delete_blog.dart';
 import 'package:blog_app/features/blog/domain/usecases/get_all_blogs.dart';
 import 'package:blog_app/features/blog/domain/usecases/get_all_blogs_by_id.dart';
+import 'package:blog_app/features/blog/domain/usecases/update_blog.dart';
 import 'package:blog_app/features/blog/domain/usecases/upload_blog.dart';
 import 'package:blog_app/features/auth/domain/usecases/user_sign_out.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -43,6 +46,8 @@ Future<void> initDependencies() async {
   serviceLocator.registerLazySingleton(() => Hive.box(name: 'blogs'));
   serviceLocator.registerFactory(() => InternetConnection());
 
+  serviceLocator.registerLazySingleton(() => Logger());
+
   serviceLocator.registerFactory<ConnectionChecker>(
       () => ConnectionCheckerImpl(serviceLocator()));
 }
@@ -52,10 +57,12 @@ void _initAuth() {
     ..registerFactory<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(
         serviceLocator(),
+        serviceLocator(),
       ),
     )
     ..registerFactory<AuthRepository>(
       () => AuthRepositoryImpl(
+        serviceLocator(),
         serviceLocator(),
         serviceLocator(),
       ),
@@ -106,6 +113,7 @@ void _initBlog() {
     ..registerFactory<BlogRemoteDataSource>(
       () => BlogRemoteDataSourceImpl(
         serviceLocator(),
+        serviceLocator(),
       ),
     )
     // ..registerFactory<BlogLocalDataSource>(
@@ -117,7 +125,7 @@ void _initBlog() {
       () => BlogRepositoryImpl(
         serviceLocator(),
         serviceLocator(),
-        //serviceLocator(),
+        serviceLocator(),
       ),
     )
 
@@ -128,7 +136,17 @@ void _initBlog() {
       ),
     )
     ..registerFactory(
+      () => UpdateBlog(
+        serviceLocator(),
+      ),
+    )
+    ..registerFactory(
       () => GetAllBlogsById(
+        serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => DeleteBlog(
         serviceLocator(),
       ),
     )
@@ -144,6 +162,8 @@ void _initBlog() {
       uploadBlog: serviceLocator(),
       getAllBlogs: serviceLocator(),
       getAllBlogsById: serviceLocator(),
+      deleteBlog: serviceLocator(),
+      updateBlog: serviceLocator(),
     ),
   );
 }

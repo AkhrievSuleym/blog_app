@@ -1,25 +1,51 @@
+import 'package:blog_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blog_app/core/common/entities/blog_entity.dart';
 import 'package:blog_app/core/theme/app_pallete.dart';
 import 'package:blog_app/core/utils/calculate_reading_time.dart';
+import 'package:blog_app/core/utils/capitalize.dart';
 import 'package:blog_app/core/utils/format_date.dart';
+import 'package:blog_app/core/utils/show_snackbar.dart';
+import 'package:blog_app/features/blog/presentation/bloc/blog_bloc.dart';
+import 'package:blog_app/features/blog/presentation/pages/blog_page.dart';
+import 'package:blog_app/features/blog/presentation/pages/new_or_edit_blog_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BlogViewerPage extends StatelessWidget {
+class BlogViewerPage extends StatefulWidget {
   static route(BlogEntity blog) => MaterialPageRoute(
-        builder: (context) => BlogViewerPage(
-          blog: blog,
-        ),
+        builder: (context) => BlogViewerPage(blog: blog),
       );
+
   final BlogEntity blog;
+
   const BlogViewerPage({
     super.key,
     required this.blog,
   });
 
   @override
+  State<BlogViewerPage> createState() => _BlogViewerPageState();
+}
+
+class _BlogViewerPageState extends State<BlogViewerPage> {
+  void _deleteBlog(String id) {
+    context.read<BlogBloc>().add(BlogDeleteEvent(blogId: id));
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final user = (context.read<AppUserCubit>().state as AppUserLoggedIn).user;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  BlogPage.route(),
+                  (route) => false,
+                );
+              },
+              icon: const Icon(Icons.arrow_back_ios_new_sharp))),
       body: Scrollbar(
         child: SingleChildScrollView(
           child: Padding(
@@ -28,7 +54,7 @@ class BlogViewerPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  blog.title,
+                  widget.blog.title,
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -36,7 +62,7 @@ class BlogViewerPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'By ${blog.userName}',
+                  'By ${widget.blog.userName?.capitalize()}',
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
@@ -44,7 +70,7 @@ class BlogViewerPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  '${formatDateBydMMMYYYY(blog.updatedAt)} . ${calculateReadingTime(blog.content)} min',
+                  '${formatDateBydMMMYYYY(widget.blog.updatedAt)} . ${calculateReadingTime(widget.blog.content)} min',
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     color: AppPallete.greyColor,
@@ -54,16 +80,62 @@ class BlogViewerPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.network(blog.imageUrl),
+                  child: Image.network(
+                    widget.blog.imageUrl,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  blog.content,
+                  widget.blog.content,
                   style: const TextStyle(
                     fontSize: 16,
                     height: 2,
                   ),
-                )
+                ),
+                (user.id == widget.blog.userId)
+                    ? Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(context,
+                                  NewOrEditBlogPage.route(widget.blog));
+                            },
+                            icon: const Icon(Icons.edit),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              _deleteBlog(widget.blog.id);
+                              showSnackBar(context, 'Success delete');
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                BlogPage.route(),
+                                (route) => false,
+                              );
+                            },
+                            icon: const Icon(Icons.delete),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              showSnackBar(
+                                  context, 'You can edit only your blogs!',
+                                  isError: true);
+                            },
+                            icon: const Icon(Icons.edit_off_outlined),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showSnackBar(
+                                  context, 'You can delete only your blogs!',
+                                  isError: true);
+                            },
+                            icon: const Icon(Icons.delete_forever_outlined),
+                          ),
+                        ],
+                      )
               ],
             ),
           ),

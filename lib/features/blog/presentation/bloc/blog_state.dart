@@ -15,10 +15,22 @@ final class BlogFailure extends BlogState {
 
 final class BlogUploadSuccess extends BlogState {}
 
+final class BlogUpdateSuccess extends BlogState {
+  final BlogEntity blog;
+
+  BlogUpdateSuccess(this.blog);
+}
+
 final class BlogDeleteSuccess extends BlogState {}
 
 final class BlogDisplaySuccess extends BlogState {
   final List<BlogEntity> blogs;
 
   BlogDisplaySuccess(this.blogs);
+}
+
+final class BlogsByIdDisplaySuccess extends BlogState {
+  final List<BlogEntity> blogs;
+
+  BlogsByIdDisplaySuccess(this.blogs);
 }

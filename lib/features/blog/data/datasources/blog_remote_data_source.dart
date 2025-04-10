@@ -18,13 +18,18 @@ abstract interface class BlogRemoteDataSource {
   Future<void> deleteBlogById({
     required String blogId,
   });
+  Future<BlogModel> editBlogById({required BlogModel blog});
+  Future<String> updateBlogImage({
+    required File image,
+    required BlogModel blog,
+  });
 }
 
 class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   final SupabaseClient supabaseClient;
-  final Logger logger = Logger();
+  final Logger _logger;
 
-  BlogRemoteDataSourceImpl(this.supabaseClient);
+  BlogRemoteDataSourceImpl(this.supabaseClient, this._logger);
 
   @override
   Future<BlogModel> uploadBlog(BlogModel blog) async {
@@ -52,6 +57,30 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
       throw ServerException(e.message);
     } catch (e) {
       throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<String> updateBlogImage({
+    required File image,
+    required BlogModel blog,
+  }) async {
+    try {
+      await supabaseClient.storage.from('blog_images').update(
+            blog.id,
+            image,
+            fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
+          );
+      final publicUrl =
+          supabaseClient.storage.from('blog_images').getPublicUrl(blog.id);
+      final uniqueUrl = "$publicUrl?v=${DateTime.now().millisecondsSinceEpoch}";
+      return uniqueUrl;
+    } on StorageException catch (e) {
+      _logger.e("Failed to update blog image: ${e.message}");
+      throw ServerException(e.message);
+    } catch (e) {
+      _logger.e("Unexpected error updating blog image: $e");
+      throw ServerException("Failed to update blog image");
     }
   }
 
@@ -96,6 +125,21 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
     try {
       await supabaseClient.from('blogs').delete().eq('id', blogId);
     } catch (error) {
+      throw ServerException(error.toString());
+    }
+  }
+
+  @override
+  Future<BlogModel> editBlogById({required BlogModel blog}) async {
+    try {
+      final blogData = await supabaseClient
+          .from('blogs')
+          .update(blog.toJson())
+          .eq('id', blog.id)
+          .select();
+      return BlogModel.fromJson(blogData.first);
+    } catch (error) {
+      _logger.e(error.toString());
       throw ServerException(error.toString());
     }
   }
