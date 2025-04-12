@@ -104,11 +104,8 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<List<BlogModel>> getAllBlogsById({required String userId}) async {
     try {
-      final blogData = await supabaseClient
-          .from('blogs')
-          .select()
-          .eq('user_id', userId)
-          .order('created_at', ascending: true);
+      final blogData =
+          await supabaseClient.from('blogs').select().eq('user_id', userId);
 
       return blogData
           .map(

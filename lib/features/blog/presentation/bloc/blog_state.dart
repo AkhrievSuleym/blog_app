@@ -30,7 +30,7 @@ final class BlogDisplaySuccess extends BlogState {
 }
 
 final class BlogsByIdDisplaySuccess extends BlogState {
-  final List<BlogEntity> blogs;
+  final List<BlogEntity> userBlogs;
 
-  BlogsByIdDisplaySuccess(this.blogs);
+  BlogsByIdDisplaySuccess(this.userBlogs);
 }
