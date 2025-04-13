@@ -78,10 +78,12 @@ class _BlogViewerPageState extends State<BlogViewerPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    widget.blog.imageUrl,
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      widget.blog.imageUrl,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
