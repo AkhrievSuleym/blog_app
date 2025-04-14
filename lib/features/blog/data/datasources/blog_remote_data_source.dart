@@ -89,16 +89,17 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
     try {
       final blogs = await supabaseClient
           .from('blogs')
-          .select('*, users (name, imageUrl)');
+          .select('*, users (name, image_url)');
       return blogs
           .map(
             (blog) => BlogModel.fromJson(blog).copyWith(
               userName: blog['users']['name'],
-              userImageUrl: blog['users']['imageUrl'],
+              userImageUrl: blog['users']['image_url'],
             ),
           )
           .toList();
     } catch (e) {
+      _logger.i(e.toString());
       throw ServerException(e.toString());
     }
   }

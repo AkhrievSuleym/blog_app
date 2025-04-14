@@ -39,28 +39,34 @@ class _BlogPageState extends State<BlogPage> {
           onPressed: () {
             final user =
                 (context.read<AppUserCubit>().state as AppUserLoggedIn).user;
-            context.read<BlogBloc>().add(GetAllBlogsByIdEvent(userId: user.id));
 
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                builder: (context) => BlocListener<BlogBloc, BlogState>(
-                  listener: (context, state) {
-                    if (state is BlogsByIdDisplaySuccess) {
-                      Navigator.pushReplacement(
-                        context,
-                        ProfilePage.route(user, state.userBlogs),
-                      );
-                    } else if (state is BlogFailure) {
-                      showSnackBar(context, state.error, isError: true);
-                    }
-                  },
-                  child: const Scaffold(
-                    body: Loading(),
-                  ),
-                ),
-              ),
+              ProfilePage.route(user),
             );
+
+            // context.read<BlogBloc>().add(GetAllBlogsByIdEvent(userId: user.id));
+
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => BlocListener<BlogBloc, BlogState>(
+            //       listener: (context, state) {
+            //         if (state is BlogsByIdDisplaySuccess) {
+            //           Navigator.pushReplacement(
+            //             context,
+            //             ProfilePage.route(user),
+            //           );
+            //         } else if (state is BlogFailure) {
+            //           showSnackBar(context, state.error, isError: true);
+            //         }
+            //       },
+            //       child: const Scaffold(
+            //         body: Loading(),
+            //       ),
+            //     ),
+            //   ),
+            // );
           },
         ),
         actions: [
