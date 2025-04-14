@@ -23,6 +23,8 @@ class BlogCard extends StatelessWidget {
     final userImageUrl =
         (context.read<AppUserCubit>().state as AppUserLoggedIn).user.imageUrl;
 
+    final ImageProvider image = NetworkImage(userImageUrl);
+
     return GestureDetector(
       onTap: () {
         Navigator.push(context, BlogViewerPage.route(blog));
@@ -57,17 +59,13 @@ class BlogCard extends StatelessWidget {
                 child: Row(
                   children: [
                     CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.grey[300],
-                        child: userImageUrl != ''
-                            ? Image.network(
-                                userImageUrl,
-                                fit: BoxFit.cover,
-                              )
-                            : Icon(
-                                Icons.person,
-                                color: color,
-                              )),
+                      radius: 20,
+                      backgroundColor: Colors.grey[300],
+                      backgroundImage: image,
+                      child: image == null
+                          ? Icon(Icons.person, color: color)
+                          : null,
+                    ),
                     const SizedBox(width: 12),
                     Text(
                       blog.userName?.capitalize() ?? 'Unknown',
