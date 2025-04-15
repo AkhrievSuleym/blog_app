@@ -41,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
             if (state is AuthFailure) {
               showSnackBar(context, state.message, isError: true);
             } else if (state is AuthSuccess) {
+              context.read<AuthBloc>().add(AuthIsLoggedIn());
               Navigator.pushAndRemoveUntil(
                 context,
                 BlogPage.route(),

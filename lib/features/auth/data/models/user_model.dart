@@ -25,7 +25,7 @@ class UserModel extends UserEntity {
       email: map['email'] ?? '',
       name: map['name'] ?? '',
       imageUrl: map['image_url'] ?? '',
-      blogsCount: map['blogs_count'] ?? '',
+      blogsCount: map['blogs_count'] ?? 0,
     );
   }
 

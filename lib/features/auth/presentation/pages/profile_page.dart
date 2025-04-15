@@ -211,7 +211,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ),
                   Text(
-                    user.name.capitalize(),
+                    user.name,
                     style: profileTextStyle(fontSize: 50),
                   ),
                   Text(

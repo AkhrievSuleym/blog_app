@@ -84,7 +84,6 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return right(user);
     } on ServerException catch (e) {
-      _logger.i(e.message);
       return left(Failure(e.message));
     }
   }
