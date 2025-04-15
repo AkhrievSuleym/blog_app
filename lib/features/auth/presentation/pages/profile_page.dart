@@ -46,12 +46,14 @@ class _ProfilePageState extends State<ProfilePage> {
     context.read<AuthBloc>().add(UserLoggedOutEvent());
   }
 
-  void _updateUserProfile(File image, String name, String email, String id) {
+  void _updateUserProfile(
+      File image, String name, String email, String id, int blogsCount) {
     context.read<UpdateUserCubit>().updateUserProfile(
           image: image,
           name: name,
           email: email,
           id: id,
+          blogsCount: blogsCount,
         );
   }
 
@@ -216,10 +218,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     user.email,
                     style: profileTextStyle(),
                   ),
-                  // Text(
-                  //   "Amount of blogs: ${widget.blogs.length.toString()}",
-                  //   style: profileTextStyle(),
-                  // ),
+                  Text(
+                    "Amount of blogs: ${user.blogsCount.toString()}",
+                    style: profileTextStyle(),
+                  ),
                 ],
               ),
             ),
@@ -240,6 +242,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     user.name,
                     user.email,
                     user.id,
+                    user.blogsCount,
                   );
                 },
               ),

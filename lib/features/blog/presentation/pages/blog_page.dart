@@ -37,12 +37,9 @@ class _BlogPageState extends State<BlogPage> {
         leading: IconButton(
           icon: const Icon(Icons.person_sharp),
           onPressed: () {
-            final user =
-                (context.read<AppUserCubit>().state as AppUserLoggedIn).user;
-
             Navigator.pushReplacement(
               context,
-              ProfilePage.route(user),
+              ProfilePage.route(),
             );
 
             // context.read<BlogBloc>().add(GetAllBlogsByIdEvent(userId: user.id));

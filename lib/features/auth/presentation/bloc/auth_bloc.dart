@@ -51,6 +51,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       name: event.name,
       email: event.email,
       id: event.id,
+      blogsCount: event.blogsCount,
     );
 
     final result = await _updateUser(params);

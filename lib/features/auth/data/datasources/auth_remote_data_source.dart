@@ -57,6 +57,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final response = await supabaseClient.auth
           .signUp(password: password, email: email, data: {
         'name': name,
+        'blogs_count': 0,
       });
       if (response.user == null) {
         throw ServerException("User is null");
@@ -130,14 +131,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required UserModel user,
   }) async {
     try {
-      await supabaseClient.storage.from('user_images').update(
+      await supabaseClient.storage.from('user_images').upload(
             user.id,
             image,
             fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
           );
-      final publicUrl =
-          supabaseClient.storage.from('user_images').getPublicUrl(user.id);
-      final uniqueUrl = "$publicUrl?v=${DateTime.now().millisecondsSinceEpoch}";
+      final uniqueUrl =
+          "${supabaseClient.storage.from('user_images').getPublicUrl(user.id)}?t=${DateTime.now().microsecondsSinceEpoch}";
       return uniqueUrl;
     } on StorageException catch (e) {
       _logger.e("Failed to update user image: ${e.message}");

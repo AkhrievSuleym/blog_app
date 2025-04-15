@@ -34,11 +34,13 @@ final class UserUpdateEvent extends AuthEvent {
   final String name;
   final String email;
   final String id;
+  final int blogsCount;
 
   UserUpdateEvent({
     required this.image,
     required this.name,
     required this.email,
     required this.id,
+    required this.blogsCount,
   });
 }

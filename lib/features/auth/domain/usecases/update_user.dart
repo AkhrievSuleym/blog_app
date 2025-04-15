@@ -15,24 +15,27 @@ class UpdateUser implements UseCase<UserEntity, UpdateUserParams> {
   @override
   Future<Either<Failure, UserEntity>> call(UpdateUserParams params) async {
     return await authRepository.updateProfile(
-        image: params.image,
-        name: params.name,
-        email: params.email,
-        id: params.id);
+      image: params.image,
+      name: params.name,
+      email: params.email,
+      id: params.id,
+      blogsCount: params.blogsCount,
+    );
   }
 }
 
 class UpdateUserParams {
   final File image;
   final String name;
-
   final String email;
   final String id;
+  final int blogsCount;
 
   UpdateUserParams({
     required this.image,
     required this.name,
     required this.email,
     required this.id,
+    required this.blogsCount,
   });
 }

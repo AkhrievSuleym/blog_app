@@ -17,6 +17,7 @@ class UpdateUserCubit extends Cubit<UpdateUserState> {
     required String name,
     required String email,
     required String id,
+    required int blogsCount,
   }) async {
     emit(UpdateUserLoading());
 
@@ -25,6 +26,7 @@ class UpdateUserCubit extends Cubit<UpdateUserState> {
       name: name,
       email: email,
       id: id,
+      blogsCount: blogsCount,
     );
 
     final result = await updateUser(params);

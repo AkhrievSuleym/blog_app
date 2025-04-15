@@ -69,6 +69,7 @@ class AuthRepositoryImpl implements AuthRepository {
             email: session.user.email ?? '',
             name: '',
             imageUrl: '',
+            blogsCount: 0,
           ),
         );
       }
@@ -105,6 +106,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String name,
     required String email,
     required String id,
+    required int blogsCount,
   }) async {
     try {
       if (!await connectionChecker.isConnected) {
@@ -115,6 +117,7 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         imageUrl: '',
         id: id,
+        blogsCount: blogsCount,
       );
 
       final imageUrl =
@@ -122,7 +125,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
       _logger.i(imageUrl);
 
-      user = user.copyWith(imageUrl: imageUrl, email: email);
+      user = user.copyWith(
+        imageUrl: imageUrl,
+        email: email,
+        blogsCount: blogsCount,
+      );
 
       final updateUser = await remoteDataSource.updateProfile(user);
 
