@@ -9,6 +9,7 @@ abstract interface class AuthRepository {
     required String name,
     required String email,
     required String password,
+    required int blogsCount,
   });
 
   Future<Either<Failure, UserEntity>> login(

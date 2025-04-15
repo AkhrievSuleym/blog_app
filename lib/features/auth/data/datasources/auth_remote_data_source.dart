@@ -7,10 +7,17 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class AuthRemoteDataSource {
   Session? get currentUserSession;
-  Future<UserModel> signUp(
-      {required String name, required String email, required String password});
+  Future<UserModel> signUp({
+    required String name,
+    required String email,
+    required String password,
+    required int blogsCount,
+  });
 
-  Future<UserModel> login({required String email, required String password});
+  Future<UserModel> login({
+    required String email,
+    required String password,
+  });
 
   Future<UserModel?> getCurrentUserData();
   Future<void> signOut();
@@ -49,15 +56,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserModel> signUp(
-      {required String name,
-      required String email,
-      required String password}) async {
+  Future<UserModel> signUp({
+    required String name,
+    required String email,
+    required String password,
+    required int blogsCount,
+  }) async {
     try {
       final response = await supabaseClient.auth
           .signUp(password: password, email: email, data: {
         'name': name,
-        'blogs_count': 0,
+        'blogs_count': blogsCount,
       });
       if (response.user == null) {
         throw ServerException("User is null");

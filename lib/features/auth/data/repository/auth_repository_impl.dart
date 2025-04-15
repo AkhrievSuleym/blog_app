@@ -31,10 +31,11 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, UserEntity>> signUp(
       {required String name,
       required String email,
+      required int blogsCount,
       required String password}) async {
     return _getUser(
       () async => await remoteDataSource.signUp(
-          name: name, email: email, password: password),
+          name: name, email: email, password: password, blogsCount: blogsCount),
     );
   }
 
@@ -83,6 +84,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return right(user);
     } on ServerException catch (e) {
+      _logger.i(e.message);
       return left(Failure(e.message));
     }
   }
