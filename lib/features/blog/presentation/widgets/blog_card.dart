@@ -20,7 +20,12 @@ class BlogCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ImageProvider image = NetworkImage(blog.userImageUrl ?? '');
+    final ImageProvider? image;
+    if (blog.userImageUrl == null) {
+      image = null;
+    } else {
+      image = NetworkImage(blog.userImageUrl!);
+    }
 
     return GestureDetector(
       onTap: () {

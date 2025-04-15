@@ -236,9 +236,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 firstGradientColor: AppPallete.gradient1,
                 secondGradientColor: AppPallete.gradient2,
                 buttonText: 'save',
-                onPressed: () {
+                onPressed: () async {
+                  final defaultImage = await Constants.getDefaultImageFile();
                   _updateUserProfile(
-                    image ?? Constants.imageDefolt,
+                    image ?? defaultImage,
                     user.name,
                     user.email,
                     user.id,
