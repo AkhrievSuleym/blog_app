@@ -103,7 +103,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, UserEntity>> updateProfile({
-    required File image,
+    required File? image,
     required String name,
     required String email,
     required String id,
@@ -120,11 +120,13 @@ class AuthRepositoryImpl implements AuthRepository {
         id: id,
         blogsCount: blogsCount,
       );
-
-      final imageUrl =
-          await remoteDataSource.updateUserImage(image: image, user: user);
-
-      _logger.i(imageUrl);
+      late final String imageUrl;
+      if (image != null) {
+        imageUrl =
+            await remoteDataSource.updateUserImage(image: image, user: user);
+      } else {
+        imageUrl = '';
+      }
 
       user = user.copyWith(
         imageUrl: imageUrl,

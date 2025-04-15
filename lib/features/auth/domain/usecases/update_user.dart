@@ -25,7 +25,7 @@ class UpdateUser implements UseCase<UserEntity, UpdateUserParams> {
 }
 
 class UpdateUserParams {
-  final File image;
+  final File? image;
   final String name;
   final String email;
   final String id;

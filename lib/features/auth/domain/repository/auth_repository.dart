@@ -19,7 +19,7 @@ abstract interface class AuthRepository {
   Future<Either<Failure, void>> signOut();
 
   Future<Either<Failure, UserEntity>> updateProfile({
-    required File image,
+    required File? image,
     required String name,
     required String email,
     required String id,

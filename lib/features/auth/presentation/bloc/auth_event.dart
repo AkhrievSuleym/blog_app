@@ -31,7 +31,7 @@ final class AuthIsLoggedIn extends AuthEvent {}
 final class UserLoggedOutEvent extends AuthEvent {}
 
 final class UserUpdateEvent extends AuthEvent {
-  final File image;
+  final File? image;
   final String name;
   final String email;
   final String id;

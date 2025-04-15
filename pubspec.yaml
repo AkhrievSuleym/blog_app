@@ -74,6 +74,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/black_banner.png
+    - assets/icon.png
 
   fonts:
   - family: BigShouldersStencil

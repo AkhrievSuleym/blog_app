@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Constants {
@@ -15,23 +16,16 @@ class Constants {
     'Education'
   ];
 
-  static const String defaultImageAssetPath = 'assets/black_banner.png';
+  static const String defaultImageAssetPath = 'icon.png';
+}
 
-  static Future<File> getDefaultImageFile() async {
-    try {
-      // 1. Загружаем asset как ByteData
-      final byteData = await rootBundle.load(defaultImageAssetPath);
+Future<File> getImageFileFromAssets(String path) async {
+  final byteData = await rootBundle.load('assets/$path');
 
-      // 2. Получаем временную директорию
-      final tempDir = await getTemporaryDirectory();
-      final tempFile = File('${tempDir.path}/black_banner.png');
+  final file = File('${(await getTemporaryDirectory()).path}/$path');
+  await file.create(recursive: true);
+  await file.writeAsBytes(byteData.buffer
+      .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
 
-      // 3. Записываем данные в файл
-      await tempFile.writeAsBytes(byteData.buffer.asUint8List());
-
-      return tempFile;
-    } catch (e) {
-      throw Exception("Failed to load default image: $e");
-    }
-  }
+  return file;
 }

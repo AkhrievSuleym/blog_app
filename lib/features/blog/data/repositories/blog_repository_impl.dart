@@ -27,7 +27,7 @@ class BlogRepositoryImpl implements BlogRepository {
 
   @override
   Future<Either<Failure, BlogEntity>> uploadBlog({
-    required File image,
+    required File? image,
     required String title,
     required String content,
     required String userId,
@@ -47,8 +47,13 @@ class BlogRepositoryImpl implements BlogRepository {
         updatedAt: DateTime.now(),
       );
 
-      final imageUrl = await blogRemoteDataSource.uploadBlogImage(
-          image: image, blog: blogModel);
+      late final String imageUrl;
+      if (image != null) {
+        imageUrl = await blogRemoteDataSource.uploadBlogImage(
+            image: image, blog: blogModel);
+      } else {
+        imageUrl = '';
+      }
 
       blogModel = blogModel.copyWith(
         imageUrl: imageUrl,

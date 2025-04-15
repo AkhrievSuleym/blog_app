@@ -27,7 +27,7 @@ class UploadBlogParams {
   final String userId;
   final String title;
   final String content;
-  final File image;
+  final File? image;
   final List<String> topics;
 
   UploadBlogParams({

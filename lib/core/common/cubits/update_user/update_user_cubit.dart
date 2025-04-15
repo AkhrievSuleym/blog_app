@@ -13,7 +13,7 @@ class UpdateUserCubit extends Cubit<UpdateUserState> {
   UpdateUserCubit(this.updateUser) : super(UpdateUserInitial());
 
   Future<void> updateUserProfile({
-    required File image,
+    required File? image,
     required String name,
     required String email,
     required String id,

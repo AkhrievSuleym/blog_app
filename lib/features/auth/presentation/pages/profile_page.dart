@@ -47,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _updateUserProfile(
-      File image, String name, String email, String id, int blogsCount) {
+      File? image, String name, String email, String id, int blogsCount) {
     context.read<UpdateUserCubit>().updateUserProfile(
           image: image,
           name: name,
@@ -237,9 +237,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 secondGradientColor: AppPallete.gradient2,
                 buttonText: 'save',
                 onPressed: () async {
-                  final defaultImage = await Constants.getDefaultImageFile();
                   _updateUserProfile(
-                    image ?? defaultImage,
+                    image,
                     user.name,
                     user.email,
                     user.id,
