@@ -65,7 +65,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: [
                   const Text(
                     "Sign Up",
-                    style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontFamily: 'BigShouldersStencil',
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(
                     height: 15,
