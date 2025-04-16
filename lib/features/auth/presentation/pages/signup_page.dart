@@ -46,6 +46,7 @@ class _SignUpPageState extends State<SignUpPage> {
             if (state is AuthFailure) {
               showSnackBar(context, state.message, isError: true);
             } else if (state is AuthSuccess) {
+              context.read<AuthBloc>().add(AuthIsLoggedIn());
               Navigator.pushAndRemoveUntil(
                 context,
                 BlogPage.route(),
@@ -64,7 +65,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: [
                   const Text(
                     "Sign Up",
-                    style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontFamily: 'BigShouldersStencil',
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(
                     height: 15,
@@ -99,10 +104,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     buttonText: "Sing Up",
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
-                        context.read<AuthBloc>().add(AuthSignUp(
-                            email: emailController.text.trim(),
-                            password: passwordController.text.trim(),
-                            name: nameController.text.trim()));
+                        context.read<AuthBloc>().add(
+                              AuthSignUp(
+                                  email: emailController.text.trim(),
+                                  password: passwordController.text.trim(),
+                                  name: nameController.text.trim(),
+                                  blogsCount: 0),
+                            );
                       }
                     },
                   ),

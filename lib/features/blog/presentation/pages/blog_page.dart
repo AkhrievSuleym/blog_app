@@ -37,14 +37,33 @@ class _BlogPageState extends State<BlogPage> {
         leading: IconButton(
           icon: const Icon(Icons.person_sharp),
           onPressed: () {
-            Navigator.pushAndRemoveUntil(
-                context,
-                ProfilePage.route(
-                    (context.read<AppUserCubit>().state as AppUserLoggedIn)
-                        .user,
-                    (context.read<BlogBloc>().state as BlogDisplaySuccess)
-                        .blogs),
-                (route) => false);
+            Navigator.pushReplacement(
+              context,
+              ProfilePage.route(),
+            );
+
+            // context.read<BlogBloc>().add(GetAllBlogsByIdEvent(userId: user.id));
+
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => BlocListener<BlogBloc, BlogState>(
+            //       listener: (context, state) {
+            //         if (state is BlogsByIdDisplaySuccess) {
+            //           Navigator.pushReplacement(
+            //             context,
+            //             ProfilePage.route(user),
+            //           );
+            //         } else if (state is BlogFailure) {
+            //           showSnackBar(context, state.error, isError: true);
+            //         }
+            //       },
+            //       child: const Scaffold(
+            //         body: Loading(),
+            //       ),
+            //     ),
+            //   ),
+            // );
           },
         ),
         actions: [

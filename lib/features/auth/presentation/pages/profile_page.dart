@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:blog_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blog_app/core/common/cubits/update_user/update_user_cubit.dart';
 import 'package:blog_app/core/common/entities/blog_entity.dart';
 import 'package:blog_app/core/common/entities/user_entity.dart';
@@ -17,19 +18,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 
 class ProfilePage extends StatefulWidget {
-  static route(UserEntity user, List<BlogEntity> blogs) => MaterialPageRoute(
-        builder: (context) => ProfilePage(
-          user: user,
-          blogs: blogs,
-        ),
+  static route() => MaterialPageRoute(
+        builder: (context) => const ProfilePage(),
       );
-  final UserEntity user;
-  final List<BlogEntity> blogs;
 
   const ProfilePage({
     super.key,
-    required this.user,
-    required this.blogs,
   });
 
   @override
@@ -52,17 +46,21 @@ class _ProfilePageState extends State<ProfilePage> {
     context.read<AuthBloc>().add(UserLoggedOutEvent());
   }
 
-  void _updateUserProfile(File image, String name, String email, String id) {
+  void _updateUserProfile(
+      File? image, String name, String email, String id, int blogsCount) {
     context.read<UpdateUserCubit>().updateUserProfile(
           image: image,
           name: name,
           email: email,
           id: id,
+          blogsCount: blogsCount,
         );
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = (context.read<AppUserCubit>().state as AppUserLoggedIn).user;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -165,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         )
-                      : widget.user.imageUrl != ''
+                      : user.imageUrl != ''
                           ? GestureDetector(
                               onTap: selectImage,
                               child: SizedBox(
@@ -174,7 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(100),
                                   child: Image.network(
-                                    widget.user.imageUrl,
+                                    user.imageUrl,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -213,15 +211,15 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ),
                   Text(
-                    widget.user.name.capitalize(),
+                    user.name.capitalize(),
                     style: profileTextStyle(fontSize: 50),
                   ),
                   Text(
-                    widget.user.email,
+                    user.email,
                     style: profileTextStyle(),
                   ),
                   Text(
-                    "Amount of blogs: ${widget.blogs.length.toString()}",
+                    "Amount of blogs: ${user.blogsCount.toString()}",
                     style: profileTextStyle(),
                   ),
                 ],
@@ -238,12 +236,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 firstGradientColor: AppPallete.gradient1,
                 secondGradientColor: AppPallete.gradient2,
                 buttonText: 'save',
-                onPressed: () {
+                onPressed: () async {
                   _updateUserProfile(
-                    image ?? Constants.imageDefolt,
-                    widget.user.name,
-                    widget.user.email,
-                    widget.user.id,
+                    image,
+                    user.name,
+                    user.email,
+                    user.id,
+                    user.blogsCount,
                   );
                 },
               ),

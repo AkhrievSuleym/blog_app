@@ -31,10 +31,11 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, UserEntity>> signUp(
       {required String name,
       required String email,
+      required int blogsCount,
       required String password}) async {
     return _getUser(
       () async => await remoteDataSource.signUp(
-          name: name, email: email, password: password),
+          name: name, email: email, password: password, blogsCount: blogsCount),
     );
   }
 
@@ -69,6 +70,7 @@ class AuthRepositoryImpl implements AuthRepository {
             email: session.user.email ?? '',
             name: '',
             imageUrl: '',
+            blogsCount: 0,
           ),
         );
       }
@@ -101,10 +103,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, UserEntity>> updateProfile({
-    required File image,
+    required File? image,
     required String name,
     required String email,
     required String id,
+    required int blogsCount,
   }) async {
     try {
       if (!await connectionChecker.isConnected) {
@@ -115,14 +118,21 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         imageUrl: '',
         id: id,
+        blogsCount: blogsCount,
       );
+      late final String imageUrl;
+      if (image != null) {
+        imageUrl =
+            await remoteDataSource.updateUserImage(image: image, user: user);
+      } else {
+        imageUrl = '';
+      }
 
-      final imageUrl =
-          await remoteDataSource.updateUserImage(image: image, user: user);
-
-      _logger.i(imageUrl);
-
-      user = user.copyWith(imageUrl: imageUrl, email: email);
+      user = user.copyWith(
+        imageUrl: imageUrl,
+        email: email,
+        blogsCount: blogsCount,
+      );
 
       final updateUser = await remoteDataSource.updateProfile(user);
 

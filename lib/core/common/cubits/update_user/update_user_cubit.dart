@@ -13,10 +13,11 @@ class UpdateUserCubit extends Cubit<UpdateUserState> {
   UpdateUserCubit(this.updateUser) : super(UpdateUserInitial());
 
   Future<void> updateUserProfile({
-    required File image,
+    required File? image,
     required String name,
     required String email,
     required String id,
+    required int blogsCount,
   }) async {
     emit(UpdateUserLoading());
 
@@ -25,6 +26,7 @@ class UpdateUserCubit extends Cubit<UpdateUserState> {
       name: name,
       email: email,
       id: id,
+      blogsCount: blogsCount,
     );
 
     final result = await updateUser(params);

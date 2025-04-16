@@ -4,11 +4,13 @@ class UserEntity {
   final String email;
   final String name;
   final String imageUrl;
+  final int blogsCount;
 
   UserEntity({
     required this.id,
     required this.email,
     required this.name,
     required this.imageUrl,
+    required this.blogsCount,
   });
 }

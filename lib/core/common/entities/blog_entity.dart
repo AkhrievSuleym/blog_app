@@ -8,6 +8,7 @@ class BlogEntity {
   final List<String> topics;
   final DateTime updatedAt;
   final String? userName;
+  final String? userImageUrl;
 
   BlogEntity({
     required this.id,
@@ -18,5 +19,6 @@ class BlogEntity {
     required this.topics,
     required this.updatedAt,
     this.userName,
+    this.userImageUrl,
   });
 }

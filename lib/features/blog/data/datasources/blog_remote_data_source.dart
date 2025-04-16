@@ -87,16 +87,19 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<List<BlogModel>> getAllBlogs() async {
     try {
-      final blogs =
-          await supabaseClient.from('blogs').select('*, users (name)');
+      final blogs = await supabaseClient
+          .from('blogs')
+          .select('*, users (name, image_url)');
       return blogs
           .map(
             (blog) => BlogModel.fromJson(blog).copyWith(
               userName: blog['users']['name'],
+              userImageUrl: blog['users']['image_url'],
             ),
           )
           .toList();
     } catch (e) {
+      _logger.i(e.toString());
       throw ServerException(e.toString());
     }
   }
@@ -104,11 +107,8 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   @override
   Future<List<BlogModel>> getAllBlogsById({required String userId}) async {
     try {
-      final blogData = await supabaseClient
-          .from('blogs')
-          .select()
-          .eq('user_id', userId)
-          .order('created_at', ascending: true);
+      final blogData =
+          await supabaseClient.from('blogs').select().eq('user_id', userId);
 
       return blogData
           .map(

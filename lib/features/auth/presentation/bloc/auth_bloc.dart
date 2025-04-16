@@ -51,6 +51,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       name: event.name,
       email: event.email,
       id: event.id,
+      blogsCount: event.blogsCount,
     );
 
     final result = await _updateUser(params);
@@ -71,7 +72,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _isLoggedIn(AuthIsLoggedIn event, Emitter<AuthState> emit) async {
     final res = await _currentUser(EmptyParams());
-
     res.fold(
       (failure) {
         emit(AuthFailure(failure.message));
@@ -85,12 +85,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _onAuthSighUp(AuthSignUp event, Emitter<AuthState> emit) async {
     final res = await _userSighUp(
       UserSignUpParams(
-          email: event.email, password: event.password, name: event.name),
+        email: event.email,
+        password: event.password,
+        name: event.name,
+        blogsCount: event.blogsCount,
+      ),
     );
     res.fold(
-      (failure) => emit(
-        AuthFailure(failure.message),
-      ),
+      (failure) {
+        emit(
+          AuthFailure(failure.message),
+        );
+      },
       (user) => _emitAuthSuccess(user, emit),
     );
   }
