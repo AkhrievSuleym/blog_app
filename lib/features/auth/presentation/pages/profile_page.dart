@@ -76,11 +76,17 @@ class _ProfilePageState extends State<ProfilePage> {
               (route) => false,
             );
           },
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            size: 36,
+          ),
         ),
         actions: [
           PopupMenuButton(
-            icon: const Icon(Icons.menu),
+            icon: const Icon(
+              Icons.menu,
+              size: 36,
+            ),
             color: AppPallete.backgroundColor,
             itemBuilder: (context) => [
               PopupMenuItem(
@@ -227,14 +233,14 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           Align(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.bottomRight,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: GradientButton(
                 buttonWidth: 100,
                 buttonHeight: 50,
-                firstGradientColor: AppPallete.gradient1,
-                secondGradientColor: AppPallete.gradient2,
+                firstGradientColor: const Color.fromARGB(255, 72, 72, 75),
+                secondGradientColor: const Color.fromARGB(255, 190, 194, 196),
                 buttonText: 'save',
                 onPressed: () async {
                   _updateUserProfile(
