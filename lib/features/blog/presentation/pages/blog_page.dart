@@ -32,10 +32,20 @@ class _BlogPageState extends State<BlogPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Blog App"),
+        title: const Text(
+          "Blog App",
+          style: TextStyle(
+            fontFamily: 'BigShouldersStencil',
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.person_sharp),
+          icon: const Icon(
+            Icons.person_sharp,
+            size: 36,
+          ),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -68,10 +78,12 @@ class _BlogPageState extends State<BlogPage> {
         ),
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.push(context, NewOrEditBlogPage.route());
-              },
-              icon: const Icon(CupertinoIcons.add_circled))
+            onPressed: () {
+              Navigator.push(context, NewOrEditBlogPage.route());
+            },
+            icon: const Icon(CupertinoIcons.add_circled),
+            iconSize: 36,
+          )
         ],
       ),
       body: BlocConsumer<BlogBloc, BlogState>(
