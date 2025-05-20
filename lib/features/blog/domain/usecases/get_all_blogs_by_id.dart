@@ -3,7 +3,6 @@ import 'package:blog_app/core/error/failures.dart';
 import 'package:blog_app/core/usecases/usecase.dart';
 import 'package:blog_app/features/blog/domain/repositories/blog_repository.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:logger/logger.dart';
 
 class GetAllBlogsById
     implements UseCase<List<BlogEntity>, GetAllBlogsByIdParams> {
