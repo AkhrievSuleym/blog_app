@@ -1,22 +1,22 @@
 # Blog App
-A simple blog application built with Flutter and Supabase.
+Простое приложение для введения блога, созданное с помощью Flutter и Supabase.
 
-## Features
-* User authentication using Supabase.
-* Create and read blog posts.
-* ⏳ I’m currently working on:
-   - Update and delete blog posts
-   - User profile management
+## Особенности
+* Аутентификация пользователей с помощью Supabase.
+* Создание и чтение записей в блоге.
+* ⏳ В настоящее время я работаю над:
+   - Обновление и удаление записей в блоге
+ - Управление профилем пользователя
   
-## Technologies Used
+## Используемые технологии
 * Flutter
 * Supabase - (https://supabase.com/docs)
 
-## Version Information  
+## Информация о версии 
 * Flutter 3.24.5 • channel stable • https://github.com/flutter/flutter.git
 * Tools • Dart 3.5.4 • DevTools 2.37.3
   
-## Dependencies
+## Зависимости
 <details>
      <summary> Click to expand </summary>
      
@@ -36,24 +36,35 @@ A simple blog application built with Flutter and Supabase.
 * [path_provider](https://pub.dev/packages/path_provider)
   </details>
 
-## Getting Started
+## Начало работы
 
-This project is a starting point for a Flutter application.
+Этот проект является отправной точкой для создания приложения Flutter.
 
-A few resources to get you started if this is your first Flutter project:
+Несколько ресурсов для начала работы, если это ваш первый проект на Flutter:
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Для помощи в начале разработки на Flutter просмотрите
+[online documentation](https://docs.flutter.dev/), где представлены учебники,
+примеры, руководство по мобильной разработке и полный справочник API.
 
-1. Clone the repository:
-2. Set up Supabase:
-Create a new Supabase project
-Copy the project URL and API key and save this in hiden folder in your project.
-3. Install dependencies:
-   - flutter pub get
-4. Run the app:
+1. Клонируйте репозиторий:
+2. Настройте Supabase:
+Создайте новый проект Supabase
+Скопируйте URL-адрес проекта и ключ API и сохраните их в папке hiden вашего проекта.
+3. Установите зависимости:
+ - flutter pub get
+4. Запустите приложение:
    - flutter run lib/main.dart
+
+## Снимки экрана
+<p align="center">
+     <img src="https://github.com/user-attachments/assets/58937290-37f8-4ef0-a973-41ab2d14ab08" style="width: 200px; height: auto;">
+     <img src="https://github.com/user-attachments/assets/18ada717-e140-48fa-af58-3bf163f934f8" style="width: 200px; height: auto;">
+     <img src="https://github.com/user-attachments/assets/c35fa024-5f96-430c-bbb6-b345a6843872"  style="width: 200px; height: auto;">
+     <img src="https://github.com/user-attachments/assets/e6087f52-ad61-4655-bdcf-6a17f4236460" style="width: 200px; height: auto;">
+     <img src="https://github.com/user-attachments/assets/58edf46d-32db-41df-92bc-2e2fd14891e3" style="width: 200px; height: auto;">
+     <img src="https://github.com/user-attachments/assets/85c21837-cf37-4c26-8710-2c615408b4d6" style="width: 200px; height: auto;">
+</p>
+
