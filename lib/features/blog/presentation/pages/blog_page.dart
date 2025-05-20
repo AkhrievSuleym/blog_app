@@ -1,4 +1,3 @@
-import 'package:blog_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blog_app/core/common/widgets/loading.dart';
 import 'package:blog_app/core/utils/show_snackbar.dart';
 import 'package:blog_app/features/auth/presentation/pages/profile_page.dart';
@@ -51,29 +50,6 @@ class _BlogPageState extends State<BlogPage> {
               context,
               ProfilePage.route(),
             );
-
-            // context.read<BlogBloc>().add(GetAllBlogsByIdEvent(userId: user.id));
-
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => BlocListener<BlogBloc, BlogState>(
-            //       listener: (context, state) {
-            //         if (state is BlogsByIdDisplaySuccess) {
-            //           Navigator.pushReplacement(
-            //             context,
-            //             ProfilePage.route(user),
-            //           );
-            //         } else if (state is BlogFailure) {
-            //           showSnackBar(context, state.error, isError: true);
-            //         }
-            //       },
-            //       child: const Scaffold(
-            //         body: Loading(),
-            //       ),
-            //     ),
-            //   ),
-            // );
           },
         ),
         actions: [

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:blog_app/core/common/entities/blog_entity.dart';
-import 'package:blog_app/core/common/entities/user_entity.dart';
 import 'package:blog_app/core/usecases/usecase.dart';
 import 'package:blog_app/features/blog/domain/usecases/delete_blog.dart';
 import 'package:blog_app/features/blog/domain/usecases/get_all_blogs.dart';
