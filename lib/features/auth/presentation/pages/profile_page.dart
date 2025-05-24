@@ -144,88 +144,86 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Column(
         children: [
           Expanded(
-            child: Center(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  image != null
-                      ? GestureDetector(
-                          onTap: selectImage,
-                          child: SizedBox(
-                            height: 150,
-                            width: 150,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Image.file(
-                                image!,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                image != null
+                    ? GestureDetector(
+                        onTap: selectImage,
+                        child: SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Image.file(
+                              image!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      )
+                    : user.imageUrl != ''
+                        ? GestureDetector(
+                            onTap: selectImage,
+                            child: SizedBox(
+                              height: 250,
+                              width: 550,
+                              child: Image.network(
+                                user.imageUrl,
                                 fit: BoxFit.cover,
                               ),
                             ),
-                          ),
-                        )
-                      : user.imageUrl != ''
-                          ? GestureDetector(
-                              onTap: selectImage,
-                              child: SizedBox(
+                          )
+                        : GestureDetector(
+                            onTap: () => selectImage(),
+                            child: DottedBorder(
+                              color: AppPallete.borderColor,
+                              dashPattern: const [10, 4],
+                              radius: const Radius.circular(100),
+                              borderType: BorderType.Circle,
+                              strokeCap: StrokeCap.round,
+                              child: const SizedBox(
                                 height: 150,
                                 width: 150,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: Image.network(
-                                    user.imageUrl,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            )
-                          : GestureDetector(
-                              onTap: () => selectImage(),
-                              child: DottedBorder(
-                                color: AppPallete.borderColor,
-                                dashPattern: const [10, 4],
-                                radius: const Radius.circular(100),
-                                borderType: BorderType.Circle,
-                                strokeCap: StrokeCap.round,
-                                child: const SizedBox(
-                                  height: 150,
-                                  width: 150,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.add,
-                                        size: 40,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.add,
+                                      size: 40,
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Text(
+                                      'Your image',
+                                      style: TextStyle(
+                                        fontSize: 15,
                                       ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      Text(
-                                        'Your image',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
-                  Text(
-                    user.name.capitalize(),
-                    style: profileTextStyle(fontSize: 50),
-                  ),
-                  Text(
-                    user.email,
-                    style: profileTextStyle(),
-                  ),
-                  Text(
-                    "Amount of blogs: ${user.blogsCount.toString()}",
-                    style: profileTextStyle(),
-                  ),
-                ],
-              ),
+                          ),
+                Text(
+                  "Name: ${user.name.capitalize()}",
+                  style: profileTextStyle(fontSize: 50),
+                ),
+                Text(
+                  "Email: ${user.email}",
+                  style: profileTextStyle(),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  "Amount of blogs: ${user.blogsCount.toString()}",
+                  style: profileTextStyle(),
+                ),
+              ],
             ),
           ),
           Align(
