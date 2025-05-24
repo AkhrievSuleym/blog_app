@@ -63,7 +63,6 @@ void _initAuth() {
       () => AuthRepositoryImpl(
         serviceLocator(),
         serviceLocator(),
-        serviceLocator(),
       ),
     )
     //Usecases
