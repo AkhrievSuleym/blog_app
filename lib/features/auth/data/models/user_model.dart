@@ -1,5 +1,4 @@
 import 'package:blog_app/core/common/entities/user_entity.dart';
-import 'package:logger/logger.dart';
 
 class UserModel extends UserEntity {
   UserModel(

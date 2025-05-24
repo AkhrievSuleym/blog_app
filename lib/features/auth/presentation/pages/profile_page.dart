@@ -2,9 +2,6 @@ import 'dart:io';
 
 import 'package:blog_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blog_app/core/common/cubits/update_user/update_user_cubit.dart';
-import 'package:blog_app/core/common/entities/blog_entity.dart';
-import 'package:blog_app/core/common/entities/user_entity.dart';
-import 'package:blog_app/core/constants/constants.dart';
 import 'package:blog_app/core/theme/app_pallete.dart';
 import 'package:blog_app/core/utils/capitalize.dart';
 import 'package:blog_app/core/utils/pick_image.dart';
@@ -15,7 +12,6 @@ import 'package:blog_app/features/blog/presentation/pages/blog_page.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 
 class ProfilePage extends StatefulWidget {
   static route() => MaterialPageRoute(

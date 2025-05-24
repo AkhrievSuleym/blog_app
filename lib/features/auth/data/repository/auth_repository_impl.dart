@@ -8,15 +8,12 @@ import 'package:blog_app/core/common/entities/user_entity.dart';
 import 'package:blog_app/features/auth/data/models/user_model.dart';
 import 'package:blog_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:logger/logger.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
   final ConnectionChecker connectionChecker;
-  final Logger _logger;
 
-  AuthRepositoryImpl(
-      this.remoteDataSource, this.connectionChecker, this._logger);
+  AuthRepositoryImpl(this.remoteDataSource, this.connectionChecker);
 
   @override
   Future<Either<Failure, UserEntity>> login(
