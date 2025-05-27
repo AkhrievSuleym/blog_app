@@ -119,6 +119,21 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Row(
                   children: [
                     Text(
+                      'Messages',
+                      style: profileTextStyle(),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    const Icon(Icons.message_rounded)
+                  ],
+                ),
+                onTap: () {},
+              ),
+              PopupMenuItem(
+                child: Row(
+                  children: [
+                    Text(
                       'Sign Out',
                       style: profileTextStyle(),
                     ),
