@@ -153,10 +153,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     ? GestureDetector(
                         onTap: selectImage,
                         child: SizedBox(
-                          height: 150,
-                          width: 150,
+                          height: 140,
+                          width: 140,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
+                            borderRadius: BorderRadius.circular(90),
                             child: Image.file(
                               image!,
                               fit: BoxFit.cover,
